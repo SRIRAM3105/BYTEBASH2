@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital@1&display=swap" rel="stylesheet">
+    <title>Space Welcome</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+            overflow-x: hidden;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('stars.mp4');
+            z-index: -1;
+            background-size: cover;
+            background-attachment: fixed;
+            background-color: rgb(254, 254, 254);
+        }
+
+        .modal-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .modal {
+            display: none;
+            background-color: rgba(11, 0, 0, 0.3);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: rgba(0,0,0,0);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(8px);
+            width: 45%;
+            animation: glow 2s ease infinite alternate;
+            border: 2px solid rgb(0,0,0,0);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-content:hover {
+            transform: scale(1.05);
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            margin-top: 10px;
+        }
+
+        #proceedButton {
+            background-color: green; /* Change background color to green */
+            border: none;
+            color: white;
+            padding: 15px 30px; /* Adjust padding for larger size */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 20px; /* Increase font size */
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-family: 'PT Serif', serif;
+        }
+
+        #proceedButton:hover {
+            background-color: #4CAF50; /* Change hover background color */
+            transform: translateY(-2px);
+        }
+
+        p {
+            font-size: 200%;
+            font-family: 'PT Serif', serif;
+        }
+
+        .notification {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.02);
+            color: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            display: none;
+            width: 40%;
+            height: 30%;
+            transition: transform 0.3s ease; /* Add transition for smooth movement */
+        }
+
+        .notification:hover {
+            transform: translate(-50%, -52%); /* Adjust translateY for slight upward movement */
+        }
+
+        .notification h2 {
+            margin: 0;
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .notification p {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .notification button {
+            background-color: #fff;
+            border: 1px solid #ff0000;
+            color: #ff0000;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .notification button:hover {
+            background-color: #ff0000;
+            color: #fff;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            display: none;
+        }
+
+        .loading-spinner {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #ff0000;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+   <script>
+    window.onload = function() {
+        var modal = document.querySelector(".modal");
+        modal.style.display = "flex";
+
+        var proceedButton = document.getElementById("proceedButton");
+        proceedButton.onclick = function() {
+            var name = document.getElementById("teamName").value;
+            if (name) {
+                var notification = document.querySelector(".notification");
+                notification.style.display = "block";
+                var notificationText = notification.querySelector("p");
+                notificationText.innerHTML = `Welcome, ${name}! Would you like to proceed?`;
+
+                // Hide the first modal
+                modal.style.display = "none";
+            } else {
+                var alertMsg = document.querySelector(".alert");
+                alertMsg.textContent = "Please enter a team name";
+            }
+        }
+
+        var yesButton = document.getElementById("yesButton");
+        yesButton.onclick = function() {
+            document.querySelector('.loading-overlay').style.display = 'flex';
+            setTimeout(function() {
+                window.location.href = "index2.html";
+            }, 2000);
+        }
+
+        var noButton = document.getElementById("noButton");
+        noButton.onclick = function() {
+            
+            window.location.href = "welcome.html";
+        }
+    };
+</script>
+
+</head>
+<body>
+    <div class="background-container">
+        <div class="stars"></div>
+    </div>
+    <div class="modal">
+        <div class="modal-content">
+            <p > Please enter your Team Name:</p>
+            <input type="text" id="teamName" placeholder="Team Name">
+            <div class="alert"></div> 
+            <br><br>
+            <button id="proceedButton">Proceed</button>
+        </div>
+    </div>
+    <div class="notification">
+        <h2>Welcome to BYTE BASH!</h2>
+        <p>Would you like to proceed?</p>
+        <button id="yesButton">Yes</button>
+        <button id="noButton">No</button>
+    </div>
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+</body>
+</html>
